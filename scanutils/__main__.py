@@ -29,22 +29,35 @@ def merge_alternating(front_pdf: str, back_pdf: str, output_pdf: str) -> None:
     print(f"merged PDF written to {output_pdf}")
 
 
+def mergepdf(args):
+    merge_alternating(args.front_pdf, args.back_pdf, args.output)
+
+
 def main():
     parser = argparse.ArgumentParser(
-        description="Merge two PDFs by interleaving their pages."
+        prog="scanutils", description="Scan utilities CLI tool"
     )
-    parser.add_argument("front_pdf", help="PDF containing front pages")
-    parser.add_argument("back_pdf", help="PDF containing back pages")
-    parser.add_argument(
+    subparsers = parser.add_subparsers(dest="command")
+
+    parser_merge = subparsers.add_parser(
+        "mergepdf", help="Merge two PDFs by interleaving their pages."
+    )
+    parser_merge.add_argument("front_pdf", help="PDF containing front pages")
+    parser_merge.add_argument("back_pdf", help="PDF containing back pages")
+    parser_merge.add_argument(
         "-o",
         "--output",
         default="merged_output.pdf",
         help="Output file name (default: merged_output.pdf)",
     )
+    parser_merge.set_defaults(func=mergepdf)
 
     args = parser.parse_args()
 
-    merge_alternating(args.front_pdf, args.back_pdf, args.output)
+    if hasattr(args, "func"):
+        args.func(args)
+    else:
+        parser.print_help()
 
 
 if __name__ == "__main__":
