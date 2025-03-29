@@ -1,0 +1,12 @@
+[project]
+name = "scanutils"
+version = "0.1.0"
+description = "Scanutils is a collection of utilities for processing scans of documents."
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "pypdf>=5.4.0",
+]
+
+[project.scripts]
+scanutils = "scanutils.__main__:main"
